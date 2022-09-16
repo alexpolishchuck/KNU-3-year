@@ -174,25 +174,7 @@ class accountant extends Thread
    private int res;
    Thread parent;
 }
-class A
-{
-    public void yes()
-    {
-        yesA();
-    }
-    protected void yesA()
-    {
-        System.out.println("YES A");
-    }
-}
-class B extends A
-{
-    @Override
-    protected void yesA()
-    {
-        System.out.println("YES B");
-    }
-}
+
 public class MainB {
 
     public static void main(String[] args)
