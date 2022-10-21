@@ -29,8 +29,7 @@ public:
 		while (!isProgramStopped)
 		{
 			int x = -1;
-			
-				//std::unique_lock<std::mutex> lock(promptMutex);
+		
 				promptMutex.lock();
 				std::cout << "Enter x\n[Enter '-1' if you want to exit...]\n";
 				std::cin >> x;
@@ -42,20 +41,14 @@ public:
 				}
 				std::cin.clear();
 				std::cin.ignore(std::cin.rdbuf()->in_avail());
-			//	std::cin.ignore();
-			
 
-			
-
-			/*std::optional<int> resF = {};
-			std::optional<int> resG = {};*/
 			results.push_back(functionRes('F', std::optional<int>{}, os::lab1::compfuncs::trial_f<os::lab1::compfuncs::INT_SUM>));
 			results.push_back(functionRes('G', std::optional<int>{}, os::lab1::compfuncs::trial_g<os::lab1::compfuncs::INT_SUM>));
 			
 			threads.resize(results.size());
 			for(int i=0; i< threads.size();i++)
-			threads[i] = std::move(std::thread([i,x,this] {this->runFunction(std::get<functionsTupleParams::FUNC_FUNCTION>(
-				this->results[i]), x, this->results[i]); }));
+			threads[i] = std::thread([i,x,this] {this->runFunction(std::get<functionsTupleParams::FUNC_FUNCTION>(
+				this->results[i]), x, this->results[i]); });
 			
 
 			std::unique_lock<std::mutex>lock(mut);
@@ -127,7 +120,6 @@ private:
 				break;
 			case(2):
 				{	
-				//std::unique_lock<std::mutex>lock(mut);
 				std::get<functionsTupleParams::FUNC_RES>(funcRes) = std::get<int>(resVar);
 				cv.notify_one();
 				}
@@ -205,10 +197,6 @@ private:
 		UnregisterHotKey(NULL, hotKeyId);
 	}
 
-	void launchUserPrompt() {
-
-	}
-
 	std::atomic_bool isProgramStopped;
 	std::mutex mut;
 	std::mutex promptMutex;
@@ -234,71 +222,6 @@ int main() {
 	{
 		std::cout << e.what();
 	}
-	
-	
-	/*HANDLE hStdin;
-	DWORD cNumRead, fdwMode, fdwSaveOldMode, i;
-	INPUT_RECORD irInBuf[128];
-
-
-	hStdin = GetStdHandle(STD_INPUT_HANDLE);
-
-
-	fdwMode = ENABLE_WINDOW_INPUT | ENABLE_MOUSE_INPUT;*/
-
-	
-	//SetConsoleMode();
-//	std::string str="";
-
-	//while (1)
-	//{
-
-	//	
-	//	ReadConsoleInput(
-	//		hStdin,      // дескриптор буфера ввода
-	//		irInBuf,     // буфер, в котором читаем
-	//		128,         // размер буфера чтения
-	//		&cNumRead);
-	//	char ch;
-	//	for (i = 0; i < cNumRead; i++)
-	//	{
-	//		switch (irInBuf[i].EventType)
-	//		{
-	//		case KEY_EVENT: // ввод с клавиатуры
-	//		//	std::cout << "Key event\n";
-	//			//std::getline(std::cin, str);
-	//			 ch = _getch();
-	//			std::cout << std::string(1, '\b');
-	//			std::cout <<ch;
-	//			break;
-
-	//		case MOUSE_EVENT: // ввод от мыши
-	//			//MouseEventProc(irInBuf[i].Event.MouseEvent);
-	//			break;
-
-	//		
-	//		}
-
-	//		
-	//	}
-	//}
-	//char ch;
-	//while (1) {
-
-	//	if (_kbhit()) {
-
-	//		// Stores the pressed key in ch
-	//		ch = _getch();
-
-	//		// Terminates the loop
-	//		// when escape is pressed
-	//		if (int(ch) == 27)
-	//			break;
-
-	//		std::cout << "\nKey pressed= " << ch;
-	//	}
-	//}
-	
 	
 	return 0;
 }
