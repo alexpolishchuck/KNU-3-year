@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="urn:Test.Namespace"
+           xmlns="urn:Test.Namespace"
+           elementFormDefault="qualified">
+             <xs:element name="Bank">
+                 <xs:complexType>
+                     <xs:sequence maxOccurs="unbounded">
+                         <xs:element name="deposit">
+                             <xs:complexType>
+                                 <xs:sequence>
+                                     <xs:element name="Country" type="xs:string" id="Country"/>
+                                     <xs:element name="Type" type="xs:string" id="Type"/>
+                                     <xs:element name="Depositor" id="Depositor">
+                                         <xs:complexType>
+                                             <xs:simpleContent>
+                                                <xs:extension base="xs:string">
+                                                    <xs:attribute name="account_id" type="xs:string" use="required"/>
+                                                </xs:extension>
+                                             </xs:simpleContent>
+                                         </xs:complexType>
+                                     </xs:element>
+                                     <xs:element name="Amount" type="xs:string" id="Amount"/>
+                                     <xs:element name="Profitability" type="xs:string" id="Profitability"/>
+                                     <xs:element name="Time_constraints" type="xs:string" id="Time"/>
+                                 </xs:sequence>
+                                 <xs:attribute name="name" type="xs:string" use="required" />
+                             </xs:complexType>
+                         </xs:element>
+                     </xs:sequence>
+                 </xs:complexType>
+
+             </xs:element>
+</xs:schema>

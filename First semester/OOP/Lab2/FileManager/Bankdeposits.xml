@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+
+<Bank xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="urn:Test.Namespace"
+      xsi:schemaLocation = "urn:Test.Namespace Bankdeposits.xsd">
+    <deposit name="name">
+        <Country>country</Country>
+        <Type>type</Type>
+        <Depositor account_id="2">depositor</Depositor>
+        <Amount>amount</Amount>
+        <Profitability>profitability</Profitability>
+        <Time_constraints>timeconstraints</Time_constraints>
+    </deposit>
+    <deposit name="name2">
+        <Country>country2</Country>
+        <Type>type2</Type>
+        <Depositor account_id="1">depositor2</Depositor>
+        <Amount>amount2</Amount>
+        <Profitability>profitability2</Profitability>
+        <Time_constraints>timeconstraints2</Time_constraints>
+    </deposit>
+</Bank>
