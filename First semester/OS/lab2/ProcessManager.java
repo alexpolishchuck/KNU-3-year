@@ -33,17 +33,12 @@ public class ProcessManager {
         return processes;
     }
 
-    public int getMaxIOJobTime() {
-        return maxIOJobTime;
-    }
-
     private void addProcesses(final int n)
     {
         Random random = new Random();
         for(int i=0;i<n;i++)
         {
             processes.add(new Process(nextId,
-                    random.nextInt(maxRegularJobsTime) + 1,
                     random.nextInt(maxNumberOfIO) + 1,
                     random.nextInt(maxIOJobTime) + 1,
                             maxIOJobTime)
@@ -52,7 +47,7 @@ public class ProcessManager {
         }
     }
     private final int numberOfProcesses = 4;
-    private final int maxRegularJobsTime = 5;
+
     private final int maxIOJobTime = 10;
     private final int maxNumberOfIO = 5;
     private  PriorityBlockingQueue<Process> processes;
