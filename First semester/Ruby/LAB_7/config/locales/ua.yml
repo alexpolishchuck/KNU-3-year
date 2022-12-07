@@ -1,0 +1,36 @@
+ua:
+  Home: "Головна"
+  Students: "Учні"
+  STUDENTS: "УЧНІ"
+
+  Show_students: "Показати учнів"
+  Menu: "Меню"
+  Add_students: "Додати учня"
+  Delete_all: "Видалити всіх"
+  Show_statistics: "Показати статистику"
+  Add_new_student: "Додати нового учня"
+  Surname: "Прізвище"
+  Institution: "Бажаний НЗ"
+  Is_enrolled: "Зарахований?"
+  Yes: "Так"
+  No: "Ні"
+  Save_student: "Зберегти учня"
+  wanted_college: "Учні, які хотіли до коледжу"
+  enrolled_in_college: "Учні, зараховані до коледжу"
+  del: "Видалити"
+  ed: "Змінити"
+  Edit_student: "Змінити інформацію про учня"
+  Save_changes: "Зберегти зміни"
+  students_per_classroom: "Студентів на клас: "
+  extra_students: "Зайві студенти: "
+  number_of_classoom: "Кількість класів: "
+  wanted_to_10: "Хотіли в 10 клас: "
+  enrolled_in_10: "Зараховані до 10 класу"
+  helpers:
+    button:
+      student:
+        submit: 'WOW'
+    label:
+      student:
+        enrolled_yes: 'Так'
+        enrolled_no: 'Ні'

@@ -1,0 +1,28 @@
+<div style="margin-top: 40px;display: flex; flex-direction: row;justify-content: center; width: 100%; height: 50%; align-items: center;">
+
+  <%= form_for :student,
+               :html =>{:style =>"width: fit-content; margin: auto; display: flex; flex-direction: column; align-items: start; "},
+               url:new_student_path do |f| %>
+    <h1 style="font-family: Verdana; text-align: center;color: #20B2AA; "><%= t :Add_students %></h1>
+    <div class="form-group row" style="justify-content: start;"  >
+      <%= f.label :surname, t("Surname"), :html =>{:class => "col-sm-2 col-form-label"} %>
+      <%= f.text_field :surname, :html =>{:class => "col-sm-10 form-control"},id: 'surname' %>
+    </div>
+    <div class="form-group row" >
+      <%= f.label :institution, t("Institution"), :html =>{:class => "col-sm-2 col-form-label", :style=>"color: #20B2AA"} %>
+      <%= f.text_field :institution, :html =>{:class => "col-sm-10 form-control"} ,id: 'institution'%>
+    </div>
+    <h2 style="font-family: Verdana; color: #20B2AA;"><%= t :Is_enrolled %></h2>
+    <div class="form-group row" >
+      <%= f.radio_button :enrolled, true,id: 'enrolled_yes' %>
+      <%= f.label :enrolled_yes %>
+    </div>
+    <div class="form-group row" >
+      <%= f.radio_button :enrolled, false,id: 'enrolled_no' %>
+      <%= f.label :enrolled_no %>
+    </div>
+    <div class="form-group row">
+      <%= f.submit(t("Save_changes"), id: 'submit',class: "btn btn-success") %>
+    </div>
+  <%end%>
+</div>

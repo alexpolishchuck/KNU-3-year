@@ -1,0 +1,28 @@
+<div style="margin-top: 40px;display: flex; flex-direction: row;justify-content: center; width: 100%; height: 50%; align-items: center;">
+
+  <%= form_for :student,
+               :html =>{:style =>"width: fit-content; margin: auto; display: flex; flex-direction: column; align-items: start; "},
+               url:edit_student_path, method: :patch do |f| %>
+    <h1 style="font-family: Verdana; text-align: center;color: #20B2AA; "><%= t :Edit_student %></h1>
+    <div class="form-group row" style="justify-content: start;"  >
+      <%= f.label :surname, t("Surname"), :html =>{:class => "col-sm-2 col-form-label"} %>
+      <%= f.text_field :surname, :html =>{:class => "col-sm-10 form-control"} %>
+    </div>
+    <div class="form-group row" >
+      <%= f.label :institution, t("Institution"), :html =>{:class => "col-sm-2 col-form-label", :style=>"color: #20B2AA"} %>
+      <%= f.text_field :institution, :html =>{:class => "col-sm-10 form-control"} %>
+    </div>
+    <h2 style="font-family: Verdana; color: #20B2AA;"><%= t :Is_enrolled %></h2>
+    <div class="form-group row" >
+      <%= f.radio_button :enrolled, true %>
+      <%= f.label :enrolled_yes, "Yes" %>
+    </div>
+    <div class="form-group row" >
+      <%= f.radio_button :enrolled, false %>
+      <%= f.label :enrolled_no, "No" %>
+    </div>
+    <div class="form-group row" >
+      <%= f.submit(t("Save_changes"),class: "btn btn-success")%>
+    </div>
+  <%end%>
+</div>

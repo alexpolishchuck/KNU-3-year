@@ -1,0 +1,67 @@
+# Files in the config/locales directory are used for internationalization
+# and are automatically loaded by Rails. If you want to use locales other
+# than English, add the necessary files in this directory.
+#
+# To use the locales, use `I18n.t`:
+#
+#     I18n.t "hello"
+#
+# In views, this is aliased to just `t`:
+#
+#     <%= t("hello") %>
+#
+# To use a different locale, set it with `I18n.locale`:
+#
+#     I18n.locale = :es
+#
+# This would use the information in config/locales/es.yml.
+#
+# The following keys must be escaped otherwise they will not be retrieved by
+# the default I18n backend:
+#
+# true, false, on, off, yes, no
+#
+# Instead, surround them with single quotes.
+#
+# en:
+#   "true": "foo"
+#
+# To learn more, please read the Rails Internationalization guide
+# available at https://guides.rubyonrails.org/i18n.html.
+
+en:
+  Home: "Home"
+  Students: "Students"
+  STUDENTS: "STUDENTS"
+
+  Show_students: "Show students"
+  Menu: "Menu"
+  Add_students: "Add students"
+  Delete_all: "Delete all"
+  Show_statistics: "Show statistics"
+  Add_new_student: "Add new student"
+  Surname: "Surname"
+  Institution: "Desired Institution"
+  Is_enrolled: "Is enrolled?"
+  Yes: "Yes"
+  No: "No"
+  Save_student: "Save student"
+  wanted_college: "Students who wanted to enroll in college"
+  enrolled_in_college: "Students who enrolled in college"
+  del: "Delete"
+  ed: "Edit"
+  Edit_student: "Edit student's information"
+  Save_changes: "Save changes"
+  students_per_classroom: "Students per classroom: "
+  extra_students: "Extra students: "
+  number_of_classoom: "Number of classrooms: "
+  wanted_to_10: "Wanted to be enrolled in 10th grade: "
+  enrolled_in_10: "Enrolled in 10th grade: "
+  helpers:
+    button:
+      student:
+        submit: 'Save'
+    label:
+      student:
+        enrolled_yes: 'Yes'
+        enrolled_no: 'No'

@@ -1,0 +1,15 @@
+<h1 style="margin-top: 80px"><%= t :wanted_to_10 %> <%= @numWantedTenthGrade %></h1>
+<h1 style="margin-top: 40px"><%= t :enrolled_in_10 %> <%= @numGotIntoTenthGrade %></h1>
+<h1 style="margin-top: 40px"><%= t :number_of_classoom %> <%= @numberOfClassrooms %></h1>
+ <% if @numberOfClassrooms >0 %>
+    <% temp = @numGotIntoTenthGrade.to_f/@numberOfClassrooms %>
+    <% if temp > 25 %>
+    <%temp = 25 %>
+    <h1 style="margin-top: 40px"><%= t :students_per_classroom %> <%= temp%></h1>
+    <h1 style="margin-top: 40px"><% t :extra_students %> <%= @numGotIntoTenthGrade - temp * @numberOfClassrooms %></h1>
+    <%else %>
+    <h1 style="margin-top: 40px"><%= t :students_per_classroom %> <%= @numGotIntoTenthGrade / @numberOfClassrooms%></h1>
+    <%end%>
+<% else%>
+  <h1 style="margin-top: 40px"><%= t :students_per_classroom %> <%= 0%></h1>
+<%end%>
