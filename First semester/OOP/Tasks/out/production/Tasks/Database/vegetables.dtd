@@ -1,4 +1,0 @@
-<!ELEMENT shop (vegetable+)>
-<!ELEMENT vegetable (category,name)>
-<!ELEMENT category (#PCDATA)>
-<!ELEMENT name (#PCDATA)>
