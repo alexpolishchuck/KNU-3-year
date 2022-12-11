@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE shop SYSTEM "vegetables.dtd">
+<shop>
+                
+
+
+
+    
+    
+        
+    
+    
+    <vegetable>
+                                
+        
+        
+        <category>check</category>
+                                
+        
+        
+        <name>le pain</name>
+                            
+    
+    
+    </vegetable>
+            
+
+
+    <vegetable>
+        <category>veg</category>
+        <name>apple</name>
+    </vegetable>
+</shop>
