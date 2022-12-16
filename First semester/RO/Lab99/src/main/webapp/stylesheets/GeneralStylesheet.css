@@ -1,0 +1,42 @@
+html {
+    height: 100%;
+    width: 100%;
+}
+body {
+    height: 100%;
+    width: 100%;
+}
+.topbar-wrapper{
+    width: 100%;
+    background-color: #618685;
+    position: fixed;
+    top: 0;
+    color: #fefbd8;
+}
+.menu{
+
+}
+
+.menu-dropdown{
+    display: none;
+    position: absolute;
+    background-color:#618685;
+
+
+}
+.topbar ul{
+    display: flex;
+}
+.custom_link{
+    text-decoration: none;
+    color: #fefbd8;
+}
+.custom_link:hover
+{
+    color: #DBC79E;
+}
+td,th {
+    min-width: 3em;
+    width: 3em;
+    max-width: 3em;
+}
