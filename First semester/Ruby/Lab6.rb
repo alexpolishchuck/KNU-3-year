@@ -68,4 +68,4 @@ def start()
   puts "Students who enrolled at college:#{gotIntoCollege.to_s}"
 end
 
-start()
+a=2;b=2;c=a==b;puts c

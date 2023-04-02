@@ -1,0 +1,9 @@
+.btn_holder
+{
+    display: flex;
+    justify-content: center;
+}
+.custom_button
+{
+    width: fit-content;
+}
