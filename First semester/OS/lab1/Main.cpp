@@ -1,18 +1,32 @@
+#include <vector>
 #include <iostream>
 #include <thread>
-#include <future>
-#include <memory>
-#include <stack>
-
-enum class en
+#include <atomic>
+ 
+#include <assert.h>
+std::atomic<bool> x, y;
+std::atomic<int> z;
+void write_x_then_y()
 {
-    one = 0
-};
+    x.store(true, std::memory_order_relaxed);
+    y.store(true, std::memory_order_relaxed);
+}
+void read_y_then_x()
+{
+    while(!y.load(std::memory_order_relaxed))
+    { }
+    std::cout << x.load(std::memory_order_relaxed);
+}
 
 int main()
 {
-    en a = static_cast<en>(1);
-    return 0;
+    x = false;
+    y = false;
+    z = 0;
+    std::thread a(write_x_then_y);
+    std::thread b(read_y_then_x);
+    a.join();
+    b.join();
 }
 
 

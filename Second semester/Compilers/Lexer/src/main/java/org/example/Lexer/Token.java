@@ -10,12 +10,14 @@ public enum Token {
             "(elsif)|(END)|(end)|(ensure)|(false)|(for)|(if)|(in)|(module)|(next)|(nil)|(not)|(or)" +
             "|(redo)|(rescue)|(retry)|(return)|(self)|(super)|(then)|(true)|(undef)|(unless)|(until)|(when)" +
             "|(while)|(yield)"),
-    IDENTIFIER(""),
-    COMMENT(""), // fucking awesome
-    STRING(""),//check backslash notation
-    NUMBER("[0-9]+\\.[0-9]+"),
-    OPERATION("[+=><|&!-~*%/^?:]|(==)|(>=)|(<=)|(||)|(&&)|(?:)|(<<)|(>>)|(===)|(<=>)|(!=)|(%=)|(/=)" +
-            "|(-=)|(+=)|(*=)|(**=)|(..)|(...)"),
+    IDENTIFIER("((@{1,2})|(\\${0,1}))[A-Za-z_]+[A-Za-z0-9_]*"),
+    COMMENT("(#.*)|((=begin)(.|[\n\r])*=end)"), 
+    STRING("(\"([^\"]|[\r\n])*\")|" +
+            "(%[qQ]([^A-Za-z0-9])(.|[\r\n])*\4)|" +
+            "('([^']|[\r\n])*')"),//check backslash notation
+    NUMBER("[0-9]+(\\.{0,1}[0-9]+){0,1}"),
+    OPERATION("[\\~\\+=><\\|&\\!-\\*%\\/\\^\\?:]|(==)|(>=)|(<=)|(||)|(&&)|(\\?:)|(<<)|(>>)|(===)|(<=>)|(\\!=)|(%=)|(\\/=)" +
+            "|(-=)|(\\+=)|(\\*=)|(\\*\\*=)|(\\.\\.)|(\\.\\.\\.)|(::)|(\\^=)"),
     ERROR("");
     Token(String str)
     {

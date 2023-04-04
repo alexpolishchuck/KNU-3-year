@@ -8,11 +8,11 @@ import java.util.ArrayDeque;
 
 public class Lexer {
 
-   public ArrayDeque<Token> processFile(String filePath) throws Exception
+   public ArrayDeque<TokenWrapper> processFile(String filePath) throws Exception
     {
         currentPos = 0;
 
-        ArrayDeque<Token> res = new ArrayDeque<>();
+        ArrayDeque<TokenWrapper> res = new ArrayDeque<>();
 
         Path path = Paths.get(filePath);
         String file = Files.readString(path, StandardCharsets.UTF_8);
@@ -25,7 +25,7 @@ public class Lexer {
 
             if(token != null)
             {
-                res.add(token);
+                res.add(new TokenWrapper(token));
 
                 if(token == Token.ERROR)
                     return res;
@@ -35,22 +35,22 @@ public class Lexer {
         return res;
     }
 
-    public Token nextToken(String s)
+    public Token nextToken(String file)
     {
-        int size = s.length();
+        int size = file.length();
 
         StringBuilder lexeme = new StringBuilder();
         Character ch;
 
         while(currentPos != size)
         {
-            ch = s.charAt(currentPos);
+            ch = file.charAt(currentPos);
 
             if(ch.toString().matches(Token.WS.getRegex())
                     || ch.toString().matches(Token.DELIMITER.getRegex()))
             {
-                WSFilter(s, lexeme);
-                return validateLexeme(lexeme);
+                if(runThroughFilters(file, lexeme))
+                    return validateLexeme(lexeme);
             }
 
             lexeme.append(ch);
@@ -61,6 +61,42 @@ public class Lexer {
             return validateLexeme(lexeme);
 
         return null;
+    }
+    private boolean runThroughFilters(String file, StringBuilder lexeme)
+    {
+        if(WSFilter(file, lexeme))
+            return true;
+        if(stringFilter(file, lexeme))
+            return true;
+        if(commentFilter(file, lexeme))
+            return true;
+
+        return false;
+    }
+
+   private boolean stringFilter(String file, StringBuilder lexeme)
+    {
+        int size = file.length();
+
+        if(size >= 3 && file.substring(0,4).matches("%[qQ][^A-Za-z0-9]]"))
+            return true;
+
+        return size >= 1 && (file.charAt(0) == '\'' || file.charAt(0) == '\"');
+    }
+
+    private boolean commentFilter(String file, StringBuilder lexeme)
+    {
+        int size = file.length();
+
+        if(size >= 1 && file.charAt(0)=='#')
+            return true;
+
+        return size >= 6 && file.substring(0, 7).matches("=begin");
+    }
+
+    private boolean operatorFilter(String file, StringBuilder lexeme)
+    {
+        return true;
     }
 
     private Token validateLexeme(StringBuilder lexeme)
@@ -94,32 +130,24 @@ public class Lexer {
         return Token.ERROR;
     }
 
-    private void WSFilter(String file, StringBuilder lexeme)
-    {
-        if(!lexeme.isEmpty())
-            return;
+    private boolean WSFilter(String file, StringBuilder lexeme) {
+        if (!lexeme.isEmpty())
+            return false;
 
         Character ch = file.charAt(currentPos);
         lexeme.append(ch);
+        currentPos += 1;
 
-        if(currentPos == file.length() - 1)
-            return;
+        if (currentPos == file.length())
+            return true;
 
-        if(ch.equals('\r') && Character.compare('\n',file.charAt(currentPos + 1)) == 0)
-            lexeme.append(file.charAt(currentPos + 1));
+        if (ch.equals('\r') && Character.compare('\n', file.charAt(currentPos)) == 0)
+        {
+            lexeme.append(file.charAt(currentPos));
+            currentPos += 1;
+        }
 
-        currentPos += 2;
-    }
-
-    private void commentFilter(String file, StringBuilder lexeme)
-    {
-
-    }
-
-    private void operatorFilter(String file, StringBuilder lexeme)
-    {
-
+        return true;
     }
     private int currentPos;
-
 }

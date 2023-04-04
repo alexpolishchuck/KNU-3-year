@@ -1,4 +1,4 @@
 require 'ripper'
 require 'pp'
 
-pp Ripper.lex("@@@@@fg" )
+pp Ripper.lex("2awda")

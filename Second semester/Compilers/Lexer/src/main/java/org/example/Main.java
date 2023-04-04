@@ -2,6 +2,7 @@ package org.example;
 
 import org.example.Lexer.Lexer;
 import org.example.Lexer.Token;
+import org.example.Lexer.TokenWrapper;
 
 import java.util.ArrayDeque;
 import java.util.regex.Matcher;
@@ -11,10 +12,14 @@ public class Main {
     public static void main(String[] args) throws Exception {
         String file = "C:\\Users\\oleksandr.polishchuk\\Desktop\\oleksandrsfolder\\gitrepo\\KNU-3-year\\First semester\\Ruby\\untitled\\test.rb";
 
-        Lexer lexer = new Lexer();
-        ArrayDeque<Token> tokens = lexer.processFile(file);
+        String s = "12";
+        String s2 = s.substring(0,2);
+      boolean a =   s.matches(".*");
 
-        for(Token token : tokens)
+        Lexer lexer = new Lexer();
+        ArrayDeque<TokenWrapper> tokens = lexer.processFile(file);
+
+        for(TokenWrapper token : tokens)
         {
             StringBuilder sb = new StringBuilder();
 
@@ -29,7 +34,7 @@ public class Main {
             else
                 sb.append(token.getLexeme());
 
-            System.out.println("[ " + sb.toString() + " ]" + " - " + token.name());
+            System.out.println("[ " + sb.toString() + " ]" + " - " + token.getToken().name());
         }
 
     }
