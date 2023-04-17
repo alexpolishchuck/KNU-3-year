@@ -2,30 +2,32 @@ package com.example.demo.cards;
 
 import com.example.demo.users.Person;
 import jakarta.persistence.*;
+import lombok.*;
 
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 @Entity(name = "Card")
 @Table(name = "cards", schema = "root")
-@IdClass(CardId.class)
 public class Card {
-    public int getOwners_id() {
-        return owners_id;
-    }
-
-    public void setOwners_id(int owners_id) {
-        this.owners_id = owners_id;
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
-    @Id
+
     @Column(name = "number")
     private String number;
-    @Column(name = "owners_id")
-    private int owners_id;
+
+    @Column(name = "owners_name")
+    private String owners_name;
+
+    @Column(name = "is_blocked")
+    private boolean is_blocked;
 
     @ManyToOne(targetEntity = Person.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "owners_id", referencedColumnName = "id", insertable=false, updatable=false)
+    @JoinColumn(name = "owners_name", referencedColumnName = "name", insertable=false, updatable=false)
     private Person person;
 }

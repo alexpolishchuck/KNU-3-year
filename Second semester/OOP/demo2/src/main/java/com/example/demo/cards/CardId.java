@@ -1,27 +1,28 @@
 package com.example.demo.cards;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import lombok.*;
 
 import java.io.Serializable;
 
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class CardId implements Serializable {
 
-    public CardId(int id, String number)
-    {
-        this.id = id;
-        this.number = number;
-    }
     public String getNumber() {
         return number;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setNumber(String number) {
         this.number = number;
     }
-
     private int id;
     private String number;
 }

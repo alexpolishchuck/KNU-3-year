@@ -1,5 +1,6 @@
 package com.example.demo.security;
 
+import com.example.demo.users.Roles;
 import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -23,13 +24,14 @@ public class SecurityConfig {
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
-                .requestMatchers("")
+                .requestMatchers("/", "/authenticate", "/register", "/logout","/styles/**", "/authorize")
                 .permitAll()
+                .requestMatchers("/admin_page","/admin_page/unblock_card").hasAnyAuthority("ADMIN")
                 .anyRequest()
                 .authenticated()
                 .and()
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
                 .and()
                 .authenticationProvider(authentificationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
@@ -37,5 +39,5 @@ public class SecurityConfig {
         return http.build();
     }
     private final AuthenticationProvider authentificationProvider;
-    private final Filter jwtAuthFilter;
+    private final JwtFilter jwtAuthFilter;
 }

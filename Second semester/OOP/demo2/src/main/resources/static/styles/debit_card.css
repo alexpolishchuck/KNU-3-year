@@ -13,7 +13,7 @@
     transition: transform 200ms;
 }
 
-.card
+.debit_card
 {
     min-height: 280px;
     min-width: 498px;
@@ -34,13 +34,13 @@
     width: 60px;
     height: auto
 }
-.card .bank_name
+.debit_card .bank_name
 {
     font-family: credit_card_font;
     font-weight: bold;
     font-size: 18px;
 }
-.card .number
+.debit_card .number
 {
     font-family: credit_card_font;
     font-weight: bold;
@@ -48,22 +48,24 @@
     text-align: center;
 }
 
-.card:nth-last-child(1)
+.debit_card:nth-last-child(1)
 {
     position: relative;
 }
-.card:nth-last-child(2)
+.debit_card:nth-last-child(2)
 {
     transform: translate(-5%, -5%) scale(0.95);
 }
-.card:nth-last-child(3)
+.debit_card:nth-last-child(3)
 {
     transform: translate(-10%, -10%) scale(0.9);
 }
-.card:nth-last-child(n + 4)
+.debit_card:nth-last-child(n + 4)
 {
     transform: translate(-10%, -10%) scale(0.85);
 }
+.valid_thru
+{}
 
 @keyframes swap
 {

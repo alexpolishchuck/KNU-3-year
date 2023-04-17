@@ -8,6 +8,7 @@ import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
@@ -19,16 +20,20 @@ import java.util.List;
 @Table(name = "bank_users", schema = "root")
 public class Person implements UserDetails {
     public Person()
-    {}
+    {
+        cards = null;
+    }
 
     public Person(String name)
     {
         this.name = name;
+        cards = null;
     }
     public Person(String name, String password)
     {
         this.name = name;
         this.password = password;
+        cards = null;
     }
 
     @Override
@@ -65,6 +70,7 @@ public class Person implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -72,8 +78,8 @@ public class Person implements UserDetails {
     @Column
     private String name;
 
-    @OneToMany(targetEntity = Card.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "owners_id", referencedColumnName = "id")
+    @OneToMany(targetEntity = Card.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "owners_name", referencedColumnName = "name")
     private List<Card> cards;
     @Column(name = "password")
     private String password;

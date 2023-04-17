@@ -4,7 +4,7 @@ function swap(e)
 {
     let stack = document.querySelector(".stack");
     let children = stack.children;
-    if (children.length == 0 || e.target != children[children.length - 1])
+    if (children.length <= 1 || e.target != children[children.length - 1])
         return;
 
     children[children.length - 1].style.animation = "swap 700ms forwards";
@@ -34,6 +34,25 @@ function side_bar_display(e)
     side_bar.classList.toggle("show");
 }
 
+function block(e)
+{
+    let stack = document.querySelector(".stack");
+    let children = stack.children;
+    let valid_thru_date = children[children.length - 1].querySelector('.valid_thru');
+    let number = children[children.length - 1].querySelector('.number').innerHTML;
+    //send request first!!!
+    let request_url = "http://localhost:8080/user_page/block_card?card_number=" + number;
+
+    $.ajax({
+        url: request_url.toString(),
+        type: "POST",
+        success: function(d, status) {
+            if(status == "success")
+                valid_thru_date.innerHTML="BLOCKED";
+        }
+    });
+}
+
 function start()
 {
     document.querySelector(".stack").addEventListener("click", swap);
@@ -44,4 +63,6 @@ function start()
     {
         btns[i].addEventListener("click", side_bar_display);
     }
+
+    document.querySelector('#block_button').addEventListener('click', block);
 }

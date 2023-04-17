@@ -12,11 +12,7 @@ public class Main {
     public static void main(String[] args) throws Exception {
         String file = "C:\\Users\\oleksandr.polishchuk\\Desktop\\oleksandrsfolder\\gitrepo\\KNU-3-year\\First semester\\Ruby\\untitled\\test.rb";
 
-        String s = "12";
-        String s2 = s.substring(0,2);
-      boolean a =   s.matches(".*");
-
-        Lexer lexer = new Lexer();
+            Lexer lexer = new Lexer();
         ArrayDeque<TokenWrapper> tokens = lexer.processFile(file);
 
         for(TokenWrapper token : tokens)
