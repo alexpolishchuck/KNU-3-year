@@ -1,0 +1,58 @@
+@import "debit_card.css";
+.side_bar
+{
+    position: relative;
+    background-color: #242424;
+    height: auto;
+    max-width: 300px;
+    right: 0px;
+    opacity: 0;
+}
+.side_bar.show
+{
+    opacity: 1;
+}
+.side_bar .field
+{
+
+}
+.wrapper
+{
+    display: inline-flex;
+    height: 100%;
+}
+.side_bar .balance
+{
+    text-align: center;
+    font-family: sans-serif;
+    font-weight: bold;
+}
+.side_bar .balance_value
+{
+    text-align: left;
+    font-family: sans-serif;
+    font-weight: bold;
+    overflow-wrap: break-word;
+}
+@keyframes side_bar_display_show_animation
+{
+    0%
+    {
+        opacity: 0;
+    }
+    100%
+    {
+        opacity: 1;
+    }
+}
+@keyframes side_bar_display_hide_animation
+{
+    0%
+    {
+        opacity: 1;
+    }
+    100%
+    {
+        opacity: 0;
+    }
+}

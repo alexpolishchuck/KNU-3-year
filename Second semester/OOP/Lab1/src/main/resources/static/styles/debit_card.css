@@ -1,0 +1,88 @@
+@font-face
+{
+    font-family: credit_card_font;
+    src: url(../fonts/kredit_front.otf);
+}
+
+
+.stack
+{
+    display: flex;
+    justify-content: center;
+    position: relative;
+    transition: transform 200ms;
+}
+
+.debit_card
+{
+    min-height: 280px;
+    min-width: 498px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 2rem;
+    box-shadow: 5px 5px 5px 2px #868686;
+    background-image: url("../img/card2.jpg");
+    background-size: cover;
+    background-color: #000000;
+    color: #9E9E9E;
+    position: absolute;
+    border: solid 1px #242424;
+    transition: transform 200ms;
+}
+.chip_img
+{
+    width: 60px;
+    height: auto
+}
+.debit_card .bank_name
+{
+    font-family: credit_card_font;
+    font-weight: bold;
+    font-size: 18px;
+}
+.debit_card .number
+{
+    font-family: credit_card_font;
+    font-weight: bold;
+    font-size: 24px;
+    text-align: center;
+}
+
+.debit_card:nth-last-child(1)
+{
+    position: relative;
+}
+.debit_card:nth-last-child(2)
+{
+    transform: translate(-5%, -5%) scale(0.95);
+}
+.debit_card:nth-last-child(3)
+{
+    transform: translate(-10%, -10%) scale(0.9);
+}
+.debit_card:nth-last-child(n + 4)
+{
+    transform: translate(-10%, -10%) scale(0.85);
+}
+.valid_thru
+{}
+
+@keyframes swap
+{
+    50%
+    {
+        transform: translate(-90%, 0%) scale(0.7) rotate(-45deg);
+    }
+
+    100%
+    {
+        transform: translate(-10%, -10%) scale(0.85);
+        z-index: -1;
+    }
+}
+@media screen and (max-width: 900px) {
+    .stack
+    {
+        display: none;
+    }
+}
