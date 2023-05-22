@@ -1,18 +1,39 @@
 package org.example;
 
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.Lexer.Lexer;
-import org.example.Lexer.Token;
 import org.example.Lexer.TokenWrapper;
+import org.example.Parser.gen.exprLexer;
+import org.example.Parser.gen.exprParser;
 
+import java.io.IOException;
 import java.util.ArrayDeque;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Main {
     public static void main(String[] args) throws Exception {
+
+        parserMain();
+    }
+    private static void parserMain() throws IOException {
+        String file = "C:\\Users\\oleksandr.polishchuk\\Desktop\\oleksandrsfolder\\gitrepo\\KNU-3-year\\First semester\\Ruby\\untitled\\test.rb";
+        CharStream input = CharStreams.fromFileName(file);
+
+        exprLexer lexer = new exprLexer(input);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+
+        exprParser parser = new exprParser(tokens);
+
+        ParseTree tree = parser.prog();
+
+        System.out.println(tree.toStringTree(parser));
+    }
+    private static void lexerMain() throws Exception {
         String file = "C:\\Users\\oleksandr.polishchuk\\Desktop\\oleksandrsfolder\\gitrepo\\KNU-3-year\\First semester\\Ruby\\untitled\\test.rb";
 
-            Lexer lexer = new Lexer();
+        Lexer lexer = new Lexer();
         ArrayDeque<TokenWrapper> tokens = lexer.processFile(file);
 
         for(TokenWrapper token : tokens)
@@ -32,6 +53,6 @@ public class Main {
 
             System.out.println("[ " + sb.toString() + " ]" + " - " + token.getToken().name());
         }
-
     }
+
 }

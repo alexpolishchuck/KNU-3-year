@@ -1,8 +1,10 @@
 package com.example.demo.cards;
 
-import com.example.demo.users.Person;
-import jakarta.persistence.*;
+import com.example.demo.banks.Bank;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
+
+import javax.persistence.*;
 
 @Data
 @Builder
@@ -24,10 +26,14 @@ public class Card {
     @Column(name = "owners_name")
     private String owners_name;
 
+    @Column(name = "bank_name")
+    private String bank_name;
+
+    @JsonProperty("is_blocked")
     @Column(name = "is_blocked")
     private boolean is_blocked;
 
-    @ManyToOne(targetEntity = Person.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "owners_name", referencedColumnName = "name", insertable=false, updatable=false)
-    private Person person;
+    @ManyToOne
+    @JoinColumn(name="bank_name", referencedColumnName = "name", insertable=false, updatable=false)
+    private Bank bank;
 }

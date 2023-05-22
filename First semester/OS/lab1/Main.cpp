@@ -20,13 +20,9 @@ void read_y_then_x()
 
 int main()
 {
-    x = false;
-    y = false;
-    z = 0;
-    std::thread a(write_x_then_y);
-    std::thread b(read_y_then_x);
-    a.join();
-    b.join();
+    std::wstring w = L"asdasdas";
+    std::wstring s = std::move(w);
+
 }
 
 

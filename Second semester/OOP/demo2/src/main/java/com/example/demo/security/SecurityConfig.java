@@ -1,16 +1,12 @@
 package com.example.demo.security;
 
-import com.example.demo.users.Roles;
-import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -24,20 +20,29 @@ public class SecurityConfig {
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/", "/authenticate", "/register", "/logout","/styles/**", "/authorize")
+                .antMatchers("/authentication_callback",
+                        "/registration_callback",
+                        "/",
+                        "/login",
+                        "/logout",
+                        "/styles/**",
+                        "/register",
+                        "/authorize",
+                        "/on_main_page_loaded_script",
+                        "/scripts/**")
                 .permitAll()
-                .requestMatchers("/admin_page","/admin_page/unblock_card").hasAnyAuthority("ADMIN")
+                .antMatchers("/admin_page","/admin_page/unblock_card").hasAnyAuthority("ADMIN")
                 .anyRequest()
                 .authenticated()
                 .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
-                .and()
-                .authenticationProvider(authentificationProvider)
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .logout().logoutSuccessHandler(logoutSuccessHandler()).permitAll();
 
         return http.build();
     }
-    private final AuthenticationProvider authentificationProvider;
-    private final JwtFilter jwtAuthFilter;
+    private LogoutSuccessHandler logoutSuccessHandler()
+    {
+       return new LogoutHandlerImpl(webConfig);
+    }
+
+    private final WebConfig webConfig;
 }

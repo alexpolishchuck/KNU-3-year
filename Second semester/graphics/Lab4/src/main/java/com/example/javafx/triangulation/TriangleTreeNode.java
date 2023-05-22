@@ -3,13 +3,15 @@ package com.example.javafx.triangulation;
 import com.example.javafx.Vertex;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TriangleTreeNode {
 
     public TriangleTreeNode()
-    {}
+    {
+    }
 
-    public TriangleTreeNode(ArrayList<Vertex> vertices)
+    public TriangleTreeNode(List<Vertex> vertices)
     {
         this.vertices = vertices;
     }
@@ -25,7 +27,8 @@ public class TriangleTreeNode {
         return null;
     }
 
-    public ArrayList<Vertex> vertices;
+    public List<Vertex> vertices;
     public ArrayList<TriangleTreeNode> sons;
-    public TriangleTreeNode rightLeaf;
+    public TriangleTreeNode rightLeaf = null;
+    public TriangleTreeNode leftLeaf = null;
 }

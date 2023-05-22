@@ -1,37 +1,29 @@
 package com.example.demo.servlets;
 
 import com.example.demo.cards.Card;
+import com.example.demo.cards.CardsRepository;
 import com.example.demo.cards.CardsService;
-import com.example.demo.security.AuthService;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import java.io.IOException;
-import java.util.List;
 
-@Component
+@WebServlet("/admin_page")
 public class adminPageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        List<Card> cards = cardsService.get_users_cards(SecurityContextHolder.getContext().getAuthentication().getName());
-        req.setAttribute("cards", cards);
-        getServletContext().getRequestDispatcher("/admin_page.html").forward(req, resp);
+        getServletContext().getRequestDispatcher("/resources/pages/admin_page.jsp").forward(req, resp);
     }
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,
-                config.getServletContext());
     }
-
-    @Autowired
+    public adminPageServlet()
+    {
+        cardsService = new CardsService(new CardsRepository());
+    }
     private CardsService cardsService;
 }

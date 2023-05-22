@@ -1,6 +1,5 @@
 package com.example.demo.cards;
 
-import com.example.demo.users.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +23,8 @@ public class CardsService {
         return cardsRepository.find_card_by_number(number);
     }
     public void addCard(Card card) {
-        try {
+        try
+        {
             cardsRepository.save(card);
         } catch (Exception ex)
         {

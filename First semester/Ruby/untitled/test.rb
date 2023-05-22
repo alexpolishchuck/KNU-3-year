@@ -1,1 +1,3 @@
-a=5;b=c;%q!wwdmkjflk\r\nfmkela!
+def fasd()
+  asdasds;
+end;

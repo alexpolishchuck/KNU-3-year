@@ -5,7 +5,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayDeque;
-import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -69,7 +68,9 @@ public class Lexer {
             return token;
 
         String subString = file.substring(currentPos);
+
         Token[] values = Token.values();
+
         int size = values.length;
         int counter = 4;
 
@@ -165,79 +166,6 @@ public class Lexer {
         currentPos += matcher.end() - matcher.start();
 
         return tokenType;
-    }
-   private Token stringFilter(String file, int matcherPos)
-    {
-       if(currentPos >= file.length())
-           return null;
-
-       Pattern pattern = Pattern.compile(Token.STRING.getRegex());
-       Matcher matcher = pattern.matcher(file.substring(currentPos));
-
-       if(!matcher.find())
-           return null;
-
-       Token token = Token.STRING;
-       token.setLexeme(file.substring(currentPos, matcher.end() - matcher.start()));
-
-       currentPos += matcher.end() - matcher.start();
-
-       return token;
-    }
-
-    private Token commentFilter(String file, int matcherPos)
-    {
-        if(currentPos >= file.length())
-            return null;
-
-        Pattern pattern = Pattern.compile(Token.COMMENT.getRegex());
-        Matcher matcher = pattern.matcher(file.substring(currentPos));
-
-       if(!matcher.find())
-           return null;
-
-        Token token = Token.COMMENT;
-        token.setLexeme(file.substring(currentPos, matcher.end() - matcher.start()));
-
-        currentPos += matcher.end() - matcher.start();
-
-        return token;
-    }
-
-    private boolean operatorFilter(String file, StringBuilder lexeme)
-    {
-        return true;
-    }
-
-    private Token validateLexeme(StringBuilder lexeme)
-    {
-        if(lexeme.isEmpty())
-            return Token.ERROR;
-
-        Token token = findToken(lexeme.toString());
-
-        while(!lexeme.isEmpty() && token == Token.ERROR)
-        {
-            lexeme.deleteCharAt(lexeme.length() - 1);
-            currentPos--;
-            token = findToken(lexeme.toString());
-        }
-
-        return token;
-    }
-
-    private Token findToken(String lexeme)
-    {
-        for(Token token : Token.values())
-        {
-            if(lexeme.matches(token.getRegex()))
-            {
-                token.setLexeme(lexeme);
-                return token;
-            }
-        }
-
-        return Token.ERROR;
     }
 
     private int currentPos;

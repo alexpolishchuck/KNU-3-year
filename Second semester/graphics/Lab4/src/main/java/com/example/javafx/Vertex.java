@@ -19,7 +19,7 @@ public class Vertex {
 
     @Override
     public boolean equals(Object v) {
-        return (x == ((Vertex)v).getX() && y == ((Vertex)v).getY());
+        return (x == ((Vertex)v).getX() && y == ((Vertex)v).getY() && Id == ((Vertex) v).Id);
     }
 
     public Integer getId() {
@@ -39,28 +39,11 @@ public class Vertex {
         ArrayList<Vertex> edge = new ArrayList<>();
         edge.add(v2);
         edge.add(v3);
-        edge.sort((Vertex v0, Vertex v1)->{return (int)Math.signum(v0.Id - v1.Id);});
 
-        Pair<Double, Double> vector1 = null;
-        Pair<Double, Double> vector2 = null;
+        Pair<Double, Double> vector1 = new Pair<>((double)(edge.get(1).x - edge.get(0).x), (double)(edge.get(1).y - edge.get(0).y));
+        Pair<Double, Double> vector2 = new Pair<>((double)(x - edge.get(0).x), (double)(y - edge.get(0).y));
 
-        if(edge.get(0).Id == -1)
-        {
-            vector1 = new Pair<>(-1d, 1d);
-            vector2 = vector1;
-        }
-        else if(edge.get(0).Id == -2)
-        {
-            vector1 = new Pair<>(1d,-1d);
-            vector2 = vector1;
-        }
-        else
-        {
-            vector1 = new Pair<>((double)(edge.get(1).x - edge.get(0).x), (double)(edge.get(1).y - edge.get(0).y));
-            vector2 = new Pair<>((double)(x - edge.get(0).x), (double)(y - edge.get(0).y));
-        }
-
-        return Math.signum(vector2.getKey() * vector1.getValue() - vector2.getKey() * vector2.getValue());
+        return Math.signum(vector2.getKey() * vector1.getValue() - vector1.getKey() * vector2.getValue());
     }
 
     public Integer Id;

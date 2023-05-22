@@ -1,9 +1,6 @@
 package com.example.javafx;
 
-import com.example.javafx.triangulation.AdjacentTriangleComparator;
-import com.example.javafx.triangulation.BelongsToTriangleComparator;
-import com.example.javafx.triangulation.TriangleTreeComparator;
-import com.example.javafx.triangulation.TriangleTreeNode;
+import com.example.javafx.triangulation.*;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -15,11 +12,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Polygon;
 import javafx.util.Pair;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.*;
+import java.util.stream.Collectors;
+
 public class HelloController {
     @FXML
     private Button startButton;
@@ -34,9 +34,60 @@ public class HelloController {
 
         ArrayList<Vertex> vertices = readVertices(folder + "vertices.txt");
 
-        int[][] graph = new int[vertices.size()][vertices.size()];
+   //     TriangleTreeNode root = createInitialTriangle(vertices);
 
+    //    checkIfAllVerticesAreInside(vertices, root);
 
+        TriangleTreeNode root = DelaunayTriangulation(vertices);
+
+        Pane pane = new Pane();
+        Color color = Color.CORNFLOWERBLUE;
+/*
+        for(Vertex v : root.vertices)
+            drawVertex(v,pane,color);
+
+        for(Vertex v : vertices)
+            drawVertex(v,pane,color);
+    //    drawTriangulation(root, pane, color);
+
+        Polygon polygon = new Polygon((root.vertices.get(0).x + currentPaneOffsetX)* 2 * vertexRadius, (currentPaneOffsetY - root.vertices.get(0).y)* 2 * vertexRadius,
+                (root.vertices.get(1).x + currentPaneOffsetX) * 2 * vertexRadius,(currentPaneOffsetY - root.vertices.get(1).y)* 2 * vertexRadius,
+                (root.vertices.get(2).x + currentPaneOffsetX)* 2 * vertexRadius,(currentPaneOffsetY - root.vertices.get(2).y)* 2 * vertexRadius);
+        polygon.setFill(new Color(0.1,0.2,0.3,0.5));
+        pane.getChildren().add(polygon);
+*/
+
+        drawTriangulation(root, pane, color);
+
+        vBox.getChildren().add(pane);
+    }
+
+    private void drawTriangulation(TriangleTreeNode node, Pane pane, Color color)
+    {
+        if(node.sons != null)
+        {
+            for(TriangleTreeNode child : node.sons)
+                drawTriangulation(child, pane, color);
+
+            return;
+        }
+
+        ArrayList<Vertex> vertices = new ArrayList<>(node.vertices);
+
+       for(int i = 0; i < vertices.size(); i++)
+            if(vertices.get(i).Id < 0)
+            {
+                vertices.remove(i);
+                i--;
+            }
+
+        int size = vertices.size();
+
+        for(int i = 0; i < size; i++)
+            drawEdge(vertices.get(i), vertices.get((i + 1) % size), pane, color);
+
+        for(Vertex vertex : vertices)
+            drawVertex(vertex, pane, color);
     }
 
     //legalize edge
@@ -45,102 +96,202 @@ public class HelloController {
 
     private TriangleTreeNode DelaunayTriangulation(ArrayList<Vertex> vertices)
     {
-        vertices.sort(this::compareByY);
-
-        TriangleTreeNode root = new TriangleTreeNode();
-
-        root.vertices = new ArrayList<>(3);
-        root.vertices.add(vertices.get(vertices.size()-1));
-        root.vertices.add(new Vertex(-1,-1,-1));
-        root.vertices.add(new Vertex(-2,-2,-2));
-
-        vertices.remove(vertices.size()-1);
+        TriangleTreeNode root = createInitialTriangle(vertices);
+     //      TriangleTreeNode root = new TriangleTreeNode();
+     /*   root.vertices = new ArrayList<>(Arrays.asList(
+           new Vertex(-1, 0, 6),
+           new Vertex(-2, 25, 6),
+           new Vertex(-3, 0, -6)
+        ));*/
+        checkIfAllVerticesAreInside(vertices, root);
 
         Random random = new Random();
 
         while(vertices.size() > 0)
         {
-            int pos = random.nextInt(vertices.size());
+          //  int pos = random.nextInt(vertices.size());
+            int pos = 0;
 
-            Vertex vertex = vertices.get(pos);
+            Vertex vertex = vertices.remove(pos);
             ArrayList<TriangleTreeNode> triangles = new ArrayList<>();
             locateSuitableTriangles(triangles, root, new BelongsToTriangleComparator(vertex));
 
-            if(triangles.size() == 0 || triangles.size() > 3)
+            if(triangles.size() == 0 || triangles.size() > 2)
                 throw new RuntimeException("Wrong input");
 
-            triangles.get(0).sons = new ArrayList<>(3);
-
-            for(int i = 0; i < 3; i++)
+            for(TriangleTreeNode node : triangles)
             {
-               TriangleTreeNode node = new TriangleTreeNode(new ArrayList<>(triangles.get(0).vertices));
+                node.sons = new ArrayList<>(3);
 
-               node.vertices.remove(i);
+                for(int i = 0; i < 3; i++)
+                {
+                    TriangleTreeNode child  = new TriangleTreeNode(new ArrayList<>(node.vertices));
+                    child.vertices.remove(i);
 
-               if(vertex.locateVertexRelativelyToEdge(node.vertices.get(0), node.vertices.get(1)) != 0)
-               {
-                   node.vertices.add(vertex);
-                   triangles.get(0).sons.add(node);
-               }
+                    if(vertex.locateVertexRelativelyToEdge(child.vertices.get(0), child.vertices.get(1)) != 0)
+                    {
+                        child.vertices.add(vertex);
+                        node.sons.add(child);
+                    }
+                }
             }
 
-            //for all three/two edges:
-            //is legal
-            // not legal, flip
+            for(TriangleTreeNode node : triangles)
+            {
+                for(TriangleTreeNode child : node.sons) // fix
+                {
+                    // we know those are correct vertices because we added new vertex last
+                    legalizeEdge(vertex,
+                            new Pair<>(child.vertices.get(0), child.vertices.get(1)),
+                            child,
+                            root);
+                }
+            }
         }//while
 
         return root;
     }
-    private void legalizeEdge(Vertex vertex, Pair<Vertex,Vertex> edge, TriangleTreeNode node)
+    private void checkIfAllVerticesAreInside(List<Vertex> vertices, TriangleTreeNode root)
+    {
+        for(Vertex v : vertices)
+        {
+            BelongsToTriangleComparator comparator = new BelongsToTriangleComparator(v);
+
+            System.out.println("ID: " + v.Id + " ; " + comparator.isRightTriangle(root));
+        }
+    }
+
+    private TriangleTreeNode createInitialTriangle(ArrayList<Vertex> vertices)
+    {
+        int minX = vertices.get(0).x, minY = vertices.get(0).y;
+        int maxX = vertices.get(0).x, maxY = vertices.get(0).y;
+
+        for(Vertex v : vertices)
+        {
+            if(v.x > maxX)
+                maxX = v.x;
+            else if(v.x < minX)
+                minX = v.x;
+
+            if(v.y > maxY)
+                maxY = v.y;
+            else if(v.y <= minY)
+                minY = v.y;
+        }
+
+        int dx = (maxX - minX) * 10,
+                dy = (maxY - minY) * 10;
+
+        if(dx == 0)
+            dx = 10;
+
+        if(dy == 0)
+            dy = 10;
+
+        return new TriangleTreeNode(new ArrayList(Arrays.asList(
+                new Vertex(-1, minX - dx, minY - dy * 10),
+                new Vertex(-2, minX - dx, maxY + dy),
+                new Vertex(-3, maxX + dx * 10, maxY + dy))
+        ));
+    }
+
+
+    private void legalizeEdge(Vertex vertex,
+                              Pair<Vertex,Vertex> edge,
+                              TriangleTreeNode node,
+                              TriangleTreeNode root)
     {
         ArrayList<TriangleTreeNode> triangles = new ArrayList<>();
-        locateSuitableTriangles(triangles, node, new AdjacentTriangleComparator(node, edge));
+
+        locateSuitableTriangles(triangles, root, new AdjacentTriangleComparator(node, edge));
 
         if(triangles.size() == 0)
             return;
 
-        //finish else
+        TriangleTreeNode adjacentTriangle = triangles.get(0);
 
-    }
+        Vertex vertexToCheck = null;
 
-    private boolean isEdgeLegal(TriangleTreeNode node)
-    {
-        if(vectorMultiplication(node.vertices) < 0)
+        for(Vertex v : adjacentTriangle.vertices)
         {
-            Vertex temp = node.vertices.get(0);
-            node.vertices.set(0, node.vertices.get(1));
-            node.vertices.set(1, temp);
+            if(!v.equals(edge.getValue()) && !v.equals(edge.getKey()))
+            {
+                vertexToCheck = v;
+                break;
+            }
         }
-        double ax_ = ax-dx;
-        double ay_ = ay-dy;
-        double bx_ = bx-dx;
-        double by_ = by-dy;
-        double cx_ = cx-dx;
-        double cy_ = cy-dy;
 
-        return (
-                (ax_*ax_ + ay_*ay_) * (bx_*cy_-cx_*by_) -
-                        (bx_*bx_ + by_*by_) * (ax_*cy_-cx_*ay_) +
-                        (cx_*cx_ + cy_*cy_) * (ax_*by_-bx_*ay_)
-        ) > 0;
+        if(isEdgeLegal(vertex, edge, node, vertexToCheck))
+            return;
+
+        List<TriangleTreeNode> newTriangles = new ArrayList(Arrays.asList(
+                new TriangleTreeNode(new ArrayList(Arrays.asList(vertex, vertexToCheck, edge.getKey()))),
+                new TriangleTreeNode(new ArrayList(Arrays.asList(vertex, vertexToCheck, edge.getValue())))));
+
+        node.sons = new ArrayList<>(newTriangles);
+        adjacentTriangle.sons = node.sons;
+
+        //we know the order in which triangles were saved, thus we know which end of the edge to use
+        legalizeEdge(vertex,
+                new Pair<>(edge.getKey(), vertexToCheck),
+                newTriangles.get(0),
+                root);
+        legalizeEdge(vertex,
+                new Pair<>(edge.getValue(), vertexToCheck),
+                newTriangles.get(1),
+                root);
+        //flip
     }
-    private double vectorMultiplication(ArrayList<Vertex> vertices)
+
+    private boolean isEdgeLegal(
+            Vertex vertex,
+            Pair<Vertex,Vertex> edge,
+            TriangleTreeNode triangle,
+            Vertex vertexToCheck) //  is lexicographically correct ??? no.
     {
-        return Math.signum( (vertices.get(1).x - vertices.get(0).x)
-                *(vertices.get(2).y - vertices.get(0).y)
-                - (vertices.get(2).x - vertices.get(0).x)*(vertices.get(1).y - vertices.get(0).y));
+        //lexicographical case
+        if(edge.getKey().Id < 0 && edge.getValue().Id < 0)
+            return true;
+
+        //normal case
+        VertexUtils.sortCounterClockwise(triangle.vertices);
+
+        ArrayList<Pair<Integer, Integer>> vectors = new ArrayList<>();
+
+        for(Vertex v : triangle.vertices)
+        {
+            vectors.add(createVector(v, vertexToCheck));
+        }
+
+        return ((Math.pow(vectors.get(0).getKey(), 2) + (Math.pow(vectors.get(0).getValue(), 2)))
+                * (vectors.get(1).getKey()*vectors.get(2).getValue() - vectors.get(2).getKey()*vectors.get(1).getValue())
+                - (Math.pow(vectors.get(1).getKey(), 2) + (Math.pow(vectors.get(1).getValue(), 2)))
+                * (vectors.get(0).getKey()*vectors.get(2).getValue()-vectors.get(2).getKey()*vectors.get(0).getValue())
+                + (Math.pow(vectors.get(2).getKey(), 2) + (Math.pow(vectors.get(2).getValue(), 2)))
+                * (vectors.get(0).getKey()*vectors.get(1).getValue() - vectors.get(1).getKey()*vectors.get(0).getValue())
+        ) < 0;
     }
+    private Pair<Integer, Integer> createVector(Vertex v1, Vertex v2)
+    {
+        return new Pair<>(v1.x - v2.x, v1.y - v2.y);
+    }
+
     private void locateSuitableTriangles(
             ArrayList<TriangleTreeNode> res,
             TriangleTreeNode currentNode,
             TriangleTreeComparator comparator)
     {
-        if(currentNode.sons.size() == 0)
+        if(!comparator.isRightTriangle(currentNode))
+            return;
+
+        if(currentNode.sons == null || currentNode.sons.size() == 0)
+        {
             res.add(currentNode);
+            return;
+        }
 
         for(TriangleTreeNode node : currentNode.sons)
         {
-            if(comparator.isRightTriangle(node))
                 locateSuitableTriangles(res, node, comparator);
         }
     }

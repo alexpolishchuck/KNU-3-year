@@ -1,10 +1,20 @@
 package com.example.demo.security;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
 
-@Component
 public class DbConfig {
-    public String db_url = "jdbc:mysql://127.0.0.1:3306/root?sessionVariables=sql_mode='NO_ENGINE_SUBSTITUTION'&jdbcCompliantTruncation=false";
-    public String username = "root";
-    public String password = "1234";
+
+    public static String getDb_url() {
+        return db_url;
+    }
+
+    public static String getUsername() {
+        return username;
+    }
+
+    public static String getPassword() {
+        return password;
+    }
+
+    private static String db_url = "jdbc:mysql://127.0.0.1:3306/root?sessionVariables=sql_mode='NO_ENGINE_SUBSTITUTION'&jdbcCompliantTruncation=false";
+    private static String username = "root";
+    private static String password = "1234";
 }

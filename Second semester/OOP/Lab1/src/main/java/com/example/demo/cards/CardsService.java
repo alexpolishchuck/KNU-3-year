@@ -1,15 +1,10 @@
 package com.example.demo.cards;
 
-import com.example.demo.users.Person;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
+import java.sql.SQLException;
 import java.util.List;
 
-@Service
 public class CardsService {
-    @Autowired
+
     public CardsService(CardsRepository repository)
     {
         this.cardsRepository = repository;
@@ -31,16 +26,8 @@ public class CardsService {
             System.out.println(ex.getMessage());
         }
     }
-    @Transactional
-    public void set_blocked_status(String number, boolean status)
-    {
-        try
-        {
+    public void set_blocked_status(String number, boolean status) throws SQLException {
             cardsRepository.set_blocked_status(number, status);
-        } catch (Exception ex)
-        {
-            System.out.println(ex.getMessage());
-        }
     }
 
     public boolean has_card(String number, String name)

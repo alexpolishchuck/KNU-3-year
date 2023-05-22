@@ -19,7 +19,7 @@ function side_bar_display(e)
 {
     let side_bar = document.querySelector(".side_bar");
 
-    if(side_bar.style.display == "none")
+    if(side_bar.style.display === "none")
     {
         side_bar.style.display = "block";
         side_bar.style.animation = "side_bar_display_show_animation 750ms ease";
@@ -40,14 +40,20 @@ function block(e)
     let children = stack.children;
     let valid_thru_date = children[children.length - 1].querySelector('.valid_thru');
     let number = children[children.length - 1].querySelector('.number').innerHTML;
-    //send request first!!!
-    let request_url = "http://localhost:8080/user_page/block_card?card_number=" + number;
+    number = number.replaceAll(/[ \n\r]*/ig, "")
+
+    let request_url = "/changeCardStatus";
+
+    let cardData = {
+        cardNumber: number
+    };
 
     $.ajax({
         url: request_url.toString(),
         type: "POST",
+        data: cardData,
         success: function(d, status) {
-            if(status == "success")
+            if(status === "success")
                 valid_thru_date.innerHTML="BLOCKED";
         }
     });
@@ -55,14 +61,11 @@ function block(e)
 
 function start()
 {
-    document.querySelector(".stack").addEventListener("click", swap);
-    let btns = [document.getElementById("pay_button"),
-        document.getElementById("deposit_button") ];
-    console.log(btns.length)
-    for (let i = 0; i < btns.length; i++)
-    {
-        btns[i].addEventListener("click", side_bar_display);
-    }
 
-    document.querySelector('#block_button').addEventListener('click', block);
+    $("#container_stack").on("click", swap);
+
+    $("#payBtn").on("click", side_bar_display);
+    $("#depositBtn").on("click", side_bar_display);
+
+    $('#blockBtn').on('click', block);
 }

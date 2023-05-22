@@ -80,10 +80,7 @@
     {
         localStorage.removeItem("token");
 
-        $.ajax({
-            url: "http://localhost:8080/logout",
-            type: "POST"});
-        window.location.href = 'http://localhost:8080/';
+        window.location.href="/logout";
     }
     document.getElementById("addCard").onclick = function ()
     {

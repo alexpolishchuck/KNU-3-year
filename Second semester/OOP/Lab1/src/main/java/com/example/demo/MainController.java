@@ -7,21 +7,11 @@ import com.example.demo.security.AuthenticationResponse;
 import com.example.demo.security.RegisterRequest;
 import com.example.demo.users.BankService;
 import com.example.demo.users.Roles;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
 import java.util.List;
 
-@Controller
+//@Controller
 public class MainController {
-
+/*
     @Autowired
     public MainController(
             BankService service,
@@ -98,7 +88,7 @@ public class MainController {
     {
         return "admin_page";
     }*/
-
+/*
     @PostMapping("/user_page/block_card")
     public ResponseEntity<String> block_card(@RequestParam String card_number)
     {
@@ -164,4 +154,6 @@ public class MainController {
     private BankService bankService;
     private CardsService cardsService;
     private AuthService authService;
+
+ */
 }

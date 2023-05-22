@@ -1,24 +1,16 @@
 package com.example.demo.users;
 
 import com.example.demo.security.DbConfig;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
-
 import java.sql.*;
-@Component
 public class BankRepository {
-
-    @Autowired
-    public BankRepository(DbConfig dbConfig)
+    public BankRepository()
     {
         try
         {
             Class.forName("com.mysql.jdbc.Driver");
-            this.dbConfig = dbConfig;
-            connection = DriverManager.getConnection(dbConfig.db_url, dbConfig.username, dbConfig.password);
-            connection.setAutoCommit(false);
+            connection = DriverManager.getConnection(DbConfig.getDb_url(),
+                    DbConfig.getUsername(),
+                    DbConfig.getPassword());
 
         } catch (Exception ex)
         {
@@ -35,14 +27,11 @@ public class BankRepository {
                             + "'" + person.getName() + "',"
                             + "'" + person.getPassword() + "',"
                             + "'" + person.getRole().name() + "')");
-            connection.commit();
         } catch (Exception ex) {
             System.out.println(ex);
-
-            connection.rollback();
         }
     }
-    public UserDetails findByUsername(String username)
+    public Person findByUsername(String username)
     {
         Person person = null;
 
@@ -68,5 +57,4 @@ public class BankRepository {
     }
 
     private Connection connection;
-    private DbConfig dbConfig;
 }

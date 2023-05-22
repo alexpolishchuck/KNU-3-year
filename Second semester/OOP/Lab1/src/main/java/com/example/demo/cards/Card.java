@@ -1,7 +1,6 @@
 package com.example.demo.cards;
 
 import com.example.demo.users.Person;
-import jakarta.persistence.*;
 import lombok.*;
 
 @Data
@@ -19,6 +18,4 @@ public class Card {
     private String owners_name;
 
     private boolean is_blocked;
-
-    private Person person;
 }
