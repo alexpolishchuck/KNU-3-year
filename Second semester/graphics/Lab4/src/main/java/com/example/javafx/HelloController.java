@@ -34,28 +34,10 @@ public class HelloController {
 
         ArrayList<Vertex> vertices = readVertices(folder + "vertices.txt");
 
-   //     TriangleTreeNode root = createInitialTriangle(vertices);
-
-    //    checkIfAllVerticesAreInside(vertices, root);
-
         TriangleTreeNode root = DelaunayTriangulation(vertices);
 
         Pane pane = new Pane();
         Color color = Color.CORNFLOWERBLUE;
-/*
-        for(Vertex v : root.vertices)
-            drawVertex(v,pane,color);
-
-        for(Vertex v : vertices)
-            drawVertex(v,pane,color);
-    //    drawTriangulation(root, pane, color);
-
-        Polygon polygon = new Polygon((root.vertices.get(0).x + currentPaneOffsetX)* 2 * vertexRadius, (currentPaneOffsetY - root.vertices.get(0).y)* 2 * vertexRadius,
-                (root.vertices.get(1).x + currentPaneOffsetX) * 2 * vertexRadius,(currentPaneOffsetY - root.vertices.get(1).y)* 2 * vertexRadius,
-                (root.vertices.get(2).x + currentPaneOffsetX)* 2 * vertexRadius,(currentPaneOffsetY - root.vertices.get(2).y)* 2 * vertexRadius);
-        polygon.setFill(new Color(0.1,0.2,0.3,0.5));
-        pane.getChildren().add(polygon);
-*/
 
         drawTriangulation(root, pane, color);
 
@@ -97,20 +79,15 @@ public class HelloController {
     private TriangleTreeNode DelaunayTriangulation(ArrayList<Vertex> vertices)
     {
         TriangleTreeNode root = createInitialTriangle(vertices);
-     //      TriangleTreeNode root = new TriangleTreeNode();
-     /*   root.vertices = new ArrayList<>(Arrays.asList(
-           new Vertex(-1, 0, 6),
-           new Vertex(-2, 25, 6),
-           new Vertex(-3, 0, -6)
-        ));*/
+
         checkIfAllVerticesAreInside(vertices, root);
 
         Random random = new Random();
 
         while(vertices.size() > 0)
         {
-          //  int pos = random.nextInt(vertices.size());
-            int pos = 0;
+            int pos = random.nextInt(vertices.size());
+            //     int pos = 0;
 
             Vertex vertex = vertices.remove(pos);
             ArrayList<TriangleTreeNode> triangles = new ArrayList<>();
@@ -294,20 +271,6 @@ public class HelloController {
         {
                 locateSuitableTriangles(res, node, comparator);
         }
-    }
-
-    private int compareByX(Vertex v1, Vertex v2)
-    {
-        return (int)Math.signum(v1.getX() - v2.getX());
-    }
-    private int compareByY(Vertex v1, Vertex v2)
-    {
-        return (int)Math.signum(v1.getY() - v2.getY());
-    }
-
-    private double findDistance(Vertex v1, Vertex v2)
-    {
-        return Math.sqrt(Math.pow((v1.getX() - v2.getX()),2) + Math.pow((v1.getY() - v2.getY()),2));
     }
 
     private void drawEdge(Vertex vertex1, Vertex vertex2, Pane pane, Color color)

@@ -1,3 +1,1 @@
-def fasd()
-  asdasds;
-end;
+a = !!!!!!false

@@ -2,27 +2,39 @@
 #include <iostream>
 #include <thread>
 #include <atomic>
- 
-#include <assert.h>
-std::atomic<bool> x, y;
-std::atomic<int> z;
-void write_x_then_y()
+#include <boost/multi_index_container.hpp>
+#include <boost/multi_index/key_extractors.hpp>
+#include <boost/multi_index/member.hpp>
+#include <boost/multi_index/ordered_index.hpp>
+
+
+struct test_struct
 {
-    x.store(true, std::memory_order_relaxed);
-    y.store(true, std::memory_order_relaxed);
-}
-void read_y_then_x()
+    test_struct(): token("CHECK")
+    {}
+
+    std::string token;
+};
+
+template<typename T>
+class A
 {
-    while(!y.load(std::memory_order_relaxed))
-    { }
-    std::cout << x.load(std::memory_order_relaxed);
-}
+public: 
+    using order_by_token = boost::multi_index::ordered_unique<
+        boost::multi_index::member<T, std::string, &T::token>>;
+
+    using blocks_cache_t = boost::multi_index::multi_index_container<
+        T,
+        boost::multi_index::indexed_by<order_by_token>>;
+
+    blocks_cache_t kek;
+
+};
 
 int main()
 {
-    std::wstring w = L"asdasdas";
-    std::wstring s = std::move(w);
-
+    A<test_struct> a;
+    
 }
 
 
